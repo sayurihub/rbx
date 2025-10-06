@@ -1,0 +1,208 @@
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/x2zu/OPEN-SOURCE-UI-ROBLOX/refs/heads/main/X2ZU%20UI%20ROBLOX%20OPEN%20SOURCE/DummyUi-leak-by-x2zu/fetching-main/Tools/Framework.luau"))()
+local Window = Library:Window({
+    Title = "kuysize69",
+    Desc = "Chaunlnwza007",
+    Icon = 105059922903197,
+    Theme = "Dark",
+    Config = {
+        Keybind = Enum.KeyCode.LeftControl,
+        Size = UDim2.new(0, 500, 0, 400)
+    },
+    CloseUIButton = {
+        Enabled = true,
+        Text = "Chaunlnwza"
+    }
+})
+
+-- 🌐 ฟังก์ชันดึงชื่อไอเท็ม
+local function getItemList()
+    local list = {}
+    for _, v in pairs(game.Workspace.World.Items:GetChildren()) do
+        if not table.find(list, v.Name) then
+            table.insert(list, v.Name)
+        end
+    end
+    return list
+end
+
+local selectedItems = {}
+local autoFarm = false
+
+-- 🌟 Auto Collect Loop
+task.spawn(function()
+    local remote = game:GetService("ReplicatedStorage"):WaitForChild("Action")
+    local player = game.Players.LocalPlayer
+    while task.wait(1) do
+        if autoFarm then
+            local char = player.Character or player.CharacterAdded:Wait()
+            for _, item in pairs(game.Workspace.World.Items:GetChildren()) do
+                if table.find(selectedItems, item.Name) then
+                    char:PivotTo(item.CFrame + Vector3.new(0,5,0))
+                    task.wait(0.2)
+                    remote:InvokeServer("Collect", item)
+                    task.wait(0.5)
+                end
+            end
+        end
+    end
+end)
+
+-- 🌍 Tab หลัก
+local MainTab = Window:Tab({Title = "ฟาร์มอัตโนมัติ", Icon = "star"})
+MainTab:Section({Title = "ตั้งค่าฟาร์ม"})
+
+-- Toggle เปิด/ปิดฟาร์ม
+local autoToggle = MainTab:Toggle({
+    Title = "เปิดฟาร์มอัตโนมัติ",
+    Desc = "วาร์ปและเก็บไอเท็มที่เลือกอัตโนมัติ",
+    Value = false,
+    Callback = function(state)
+        autoFarm = state
+        Window:Notify({Title="ฟาร์มอัตโนมัติ", Desc=state and "✅ เริ่มฟาร์มแล้ว" or "🛑 หยุดฟาร์มแล้ว", Time=3})
+    end
+})
+
+-- Dropdown เลือกไอเท็มหลายตัว
+local itemDropdown = MainTab:Dropdown({
+    Title = "เลือกไอเท็มที่จะเก็บ",
+    List = getItemList(),
+    Value = getItemList()[1],
+    Multi = true,
+    Callback = function(choices)
+        selectedItems = choices
+        Window:Notify({Title="ไอเท็มที่เลือก", Desc="✅ "..table.concat(choices, ", "), Time=2})
+    end
+})
+
+-- ปุ่มรีเฟรชไอเท็ม
+MainTab:Button({
+    Title = "🔄 รีเฟรชไอเท็ม",
+    Desc = "อัปเดตรายชื่อไอเท็มทั้งหมดในแมพ",
+    Callback = function()
+        itemDropdown:Clear()
+        for _, v in pairs(getItemList()) do itemDropdown:Add(v) end
+        Window:Notify({Title="รีเฟรชไอเท็ม", Desc="✅ รีเฟรชไอเท็มเรียบร้อยแล้ว", Time=2})
+    end
+})
+
+-- 🌍 Tab วาร์ป
+local TeleportTab = Window:Tab({Title="วาร์ป", Icon="map-pin"})
+TeleportTab:Section({Title="ตั้งค่าวาร์ป"})
+
+-- ฟังก์ชันดึง SpawnLocation
+local function getSpawnList()
+    local list = {}
+    for _, v in pairs(game.Workspace:GetChildren()) do
+        if v:IsA("SpawnLocation") then table.insert(list, v.Name) end
+    end
+    return list
+end
+
+local selectedSpawn = getSpawnList()[1]
+local spawnDropdown = TeleportTab:Dropdown({
+    Title = "เลือก Spawn",
+    List = getSpawnList(),
+    Value = selectedSpawn,
+    Callback = function(choice)
+        selectedSpawn = choice
+        Window:Notify({Title="Spawn ที่เลือก", Desc="✅ "..choice, Time=2})
+    end
+})
+
+-- Dropdown ไอเท็มสำหรับวาร์ป
+local tpItem = getItemList()[1]
+local tpDropdown = TeleportTab:Dropdown({
+    Title = "เลือกไอเท็มเพื่อวาร์ป",
+    List = getItemList(),
+    Value = tpItem,
+    Callback = function(choice)
+        tpItem = choice
+        Window:Notify({Title="ไอเท็มที่เลือก", Desc="📦 "..choice, Time=2})
+    end
+})
+
+-- ปุ่มรีเฟรช SpawnLocation
+TeleportTab:Button({
+    Title = "🔄 รีเฟรช Spawn",
+    Desc = "อัปเดต SpawnLocation ทั้งหมดในแมพ",
+    Callback = function()
+        spawnDropdown:Clear()
+        for _, v in pairs(getSpawnList()) do spawnDropdown:Add(v) end
+        spawnDropdown:SetValue(getSpawnList()[1])
+        selectedSpawn = getSpawnList()[1]
+        Window:Notify({Title="รีเฟรช Spawn", Desc="✅ รีเฟรช SpawnLocation เรียบร้อยแล้ว", Time=2})
+    end
+})
+
+-- ปุ่มรีเฟรชไอเท็ม
+TeleportTab:Button({
+    Title = "🔄 รีเฟรชไอเท็ม",
+    Desc = "อัปเดตรายชื่อไอเท็มทั้งหมดในแมพ",
+    Callback = function()
+        tpDropdown:Clear()
+        for _, v in pairs(getItemList()) do tpDropdown:Add(v) end
+        tpDropdown:SetValue(getItemList()[1])
+        tpItem = getItemList()[1]
+        Window:Notify({Title="รีเฟรชไอเท็ม", Desc="✅ รีเฟรชไอเท็มเรียบร้อยแล้ว", Time=2})
+    end
+})
+
+-- ปุ่มวาร์ปไป SpawnLocation
+TeleportTab:Button({
+    Title = "📍 วาร์ปไป Spawn",
+    Desc = "วาร์ปไป SpawnLocation ที่เลือก",
+    Callback = function()
+        local char = game.Players.LocalPlayer.Character
+        local spawnObj = game.Workspace:FindFirstChild(selectedSpawn)
+        if char and char:FindFirstChild("HumanoidRootPart") and spawnObj then
+            char:PivotTo(spawnObj.CFrame + Vector3.new(0,20,0))
+            Window:Notify({Title="วาร์ป", Desc="✅ วาร์ปไป "..selectedSpawn.." แล้ว!", Time=2})
+        else
+            Window:Notify({Title="ข้อผิดพลาด", Desc="❌ ไม่พบ SpawnLocation หรือ Character", Time=2})
+        end
+    end
+})
+
+-- ปุ่มวาร์ปไปหาไอเท็ม
+TeleportTab:Button({
+    Title = "🚀 วาร์ปไปหาไอเท็ม",
+    Desc = "วาร์ปตัวละครไปยังไอเท็มที่เลือก",
+    Callback = function()
+        local char = game.Players.LocalPlayer.Character
+        if tpItem and char and char:FindFirstChild("HumanoidRootPart") then
+            for _, item in pairs(game.Workspace.World.Items:GetChildren()) do
+                if item.Name == tpItem then
+                    char:PivotTo(item.CFrame + Vector3.new(0,5,0))
+                    Window:Notify({Title="วาร์ป", Desc="✅ วาร์ปไป "..tpItem.." แล้ว!", Time=2})
+                    return
+                end
+            end
+            Window:Notify({Title="วาร์ป", Desc="❌ ไม่พบ "..tpItem.." ในแมพ", Time=2})
+        else
+            Window:Notify({Title="ข้อผิดพลาด", Desc="⚠️ กรุณาเลือกไอเท็มก่อน", Time=2})
+        end
+    end
+})
+
+-- 🌟 Tab เครดิต
+local CreditTab = Window:Tab({Title="เครดิต", Icon="user"})
+CreditTab:Section({Title="ลิงก์"})
+CreditTab:Button({
+    Title="คัดลอก Discord",
+    Desc="คัดลอกลิงก์ Discord",
+    Callback=function()
+        setclipboard("https://discord.gg/AdEhdstBRN")
+        Window:Notify({Title="เครดิต", Desc="คัดลอกเรียบร้อยแล้ว!", Time=3})
+    end
+})
+CreditTab:Button({
+    Title="คัดลอก YouTube",
+    Desc="คัดลอกลิงก์ช่อง YouTube",
+    Callback=function()
+        setclipboard("https://www.youtube.com/@__ddck")
+        Window:Notify({Title="เครดิต", Desc="คัดลอกเรียบร้อยแล้ว!", Time=3})
+    end
+})
+
+-- 🌟 Notification สุดท้าย
+Window:Notify({Title="Chaunlnwza", Desc="โหลดทุกฟีเจอร์เรียบร้อย!", Time=4})

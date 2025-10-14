@@ -1,0 +1,75 @@
+local Players = game:GetService("Players")
+local Workspace = game:GetService("Workspace")
+local Lighting = game:GetService("Lighting")
+local RunService = game:GetService("RunService")
+local StarterGui = game:GetService("StarterGui")
+local player = Players.LocalPlayer
+
+local function optimizeWorkspace()
+    Lighting.GlobalShadows = false
+    Lighting.ShadowSoftness = 0
+    Lighting.Brightness = 2
+    Lighting.FogEnd = 10000
+    Lighting.FogStart = 0
+    Lighting.ClockTime = 12
+    Lighting.ExposureCompensation = 0
+    Lighting.ColorShift_Bottom = Color3.new(1,1,1)
+    Lighting.ColorShift_Top = Color3.new(1,1,1)
+
+    for _, obj in pairs(Workspace:GetDescendants()) do
+        if obj:IsA("MeshPart") or obj:IsA("UnionOperation") or obj:IsA("Part") or obj:IsA("WedgePart") then
+            obj.Material = Enum.Material.Plastic
+            obj.Reflectance = 0
+            obj.CastShadow = false
+        elseif obj:IsA("ParticleEmitter") or obj:IsA("Trail") or obj:IsA("Smoke") or obj:IsA("Fire") or obj:IsA("Explosion") then
+            obj.Enabled = false
+        elseif obj:IsA("SurfaceLight") or obj:IsA("PointLight") or obj:IsA("SpotLight") then
+            obj.Enabled = false
+        elseif obj:IsA("Decal") or obj:IsA("Texture") then
+            obj.Transparency = 1
+        end
+    end
+
+    if Workspace:FindFirstChildOfClass("Terrain") then
+        Workspace.Terrain.WaterWaveSize = 0
+        Workspace.Terrain.WaterWaveSpeed = 0
+        Workspace.Terrain.WaterReflectance = 0
+        Workspace.Terrain.WaterTransparency = 1
+        Workspace.Terrain:Clear()
+    end
+
+    local function optimizeUI(gui)
+        for _, obj in pairs(gui:GetDescendants()) do
+            if obj:IsA("Frame") or obj:IsA("ImageLabel") or obj:IsA("TextLabel") then
+                obj.BorderSizePixel = 0
+                obj.Rotation = 0
+                obj.BackgroundTransparency = 1
+                obj.ImageTransparency = 1
+            end
+            if obj:IsA("UIGradient") or obj:IsA("UIStroke") or obj:IsA("UIAspectRatioConstraint") or obj:IsA("UIListLayout") then
+                obj:Destroy()
+            end
+            if obj:IsA("TextButton") or obj:IsA("TextLabel") then
+                obj.TextStrokeTransparency = 1
+                obj.TextTransparency = 0
+            end
+        end
+    end
+    optimizeUI(player:WaitForChild("PlayerGui"))
+    optimizeUI(StarterGui)
+
+    if player.Character then
+        for _, anim in pairs(player.Character:GetDescendants()) do
+            if anim:IsA("AnimationController") or anim:IsA("Motor6D") then
+                anim:Destroy()
+            end
+        end
+    end
+
+    RunService:Set3dRenderingEnabled(true)
+    if settings().Rendering.QualityLevel then
+        settings().Rendering.QualityLevel = 1
+    end
+end
+
+optimizeWorkspace()

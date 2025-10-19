@@ -1,0 +1,17 @@
+local placeScripts = {
+    [14608970270] = "https://pastebin.com/raw/Kdf8HX9i",
+    [132128062320193] = "https://pastebin.com/raw/bb10V3Lp",
+    [135880624242201] = "https://pastebin.com/raw/KkvZXFbP",
+    [118503840388689] = "https://pastebin.com/raw/x08Rk98f",
+    [121493238925077] = "https://pastebin.com/raw/qjvJXtQ6",
+    [110866861848433] = "https://pastebin.com/raw/zcgaUK0g"
+}
+
+local url = placeScripts[game.PlaceId]
+
+if url then
+    print("🌍 Loading script for place:", game.PlaceId)
+    loadstring(game:HttpGet(url))()
+else
+    warn("❌ This place is not in the list. PlaceId:", game.PlaceId)
+end

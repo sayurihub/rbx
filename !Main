@@ -5,7 +5,8 @@ local placeScripts = {
     [110866861848433] = "https://pastebin.com/raw/zcgaUK0g",
     [136993633183001] = "https://raw.githubusercontent.com/sayurihub/rbx/refs/heads/main/BXZ?nocache=",
     [110866861848433] = "https://raw.githubusercontent.com/sayurihub/rbx/refs/heads/main/lobbybxz?nocache=",
-    [136993633186001] = "https://raw.githubusercontent.com/sayurihub/rbx/refs/heads/main/BXZ?nocache="
+    [136993633186001] = "https://raw.githubusercontent.com/sayurihub/rbx/refs/heads/main/BXZ?nocache=",
+    [96151237893653] = "https://pastebin.com/raw/u8xeGhuL"
 }
 
 local url = placeScripts[game.PlaceId]

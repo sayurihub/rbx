@@ -6,7 +6,8 @@ local placeScripts = {
     [136993633183001] = "https://raw.githubusercontent.com/sayurihub/rbx/refs/heads/main/BXZ?nocache=",
     [110866861848433] = "https://raw.githubusercontent.com/sayurihub/rbx/refs/heads/main/lobbybxz?nocache=",
     [136993633186001] = "https://raw.githubusercontent.com/sayurihub/rbx/refs/heads/main/BXZ?nocache=",
-    [96151237893653] = "https://pastebin.com/raw/u8xeGhuL"
+    [96151237893653] = "https://pastebin.com/raw/u8xeGhuL",
+    [103874780798870] = "https://raw.githubusercontent.com/sayurihub/rbx/refs/heads/main/%5B%E2%98%A2%EF%B8%8F%5D%20Build%20a%20Bunker!"
 }
 
 local url = placeScripts[game.PlaceId]

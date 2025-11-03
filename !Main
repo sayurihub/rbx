@@ -67,7 +67,8 @@ local placeScripts = {
     [96151237893653] = "https://pastebin.com/raw/u8xeGhuL",
     [129125743283781] = "https://raw.githubusercontent.com/sayurihub/rbx/refs/heads/main/%5B%E2%98%A2%EF%B8%8F%5D%20Build%20a%20Bunker!",
     [133322550157181] = "https://raw.githubusercontent.com/sayurihub/rbx/refs/heads/main/Anime%20Evolution",
-    [121418861436763] = "https://raw.githubusercontent.com/sayurihub/rbx/refs/heads/main/Survive-Overnight-in-a-Mega-Store"
+    [121418861436763] = "https://raw.githubusercontent.com/sayurihub/rbx/refs/heads/main/Survive-Overnight-in-a-Mega-Store",
+    [10771129745] = "https://raw.githubusercontent.com/sayurihub/rbx/refs/heads/main/elemental-dungeons"
 }
 
 local url = placeScripts[game.PlaceId]
